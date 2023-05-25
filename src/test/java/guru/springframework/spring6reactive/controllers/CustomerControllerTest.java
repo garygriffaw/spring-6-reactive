@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
@@ -38,5 +39,23 @@ class CustomerControllerTest {
                 .expectStatus().isOk()
                 .expectHeader().valueEquals("Content-type", "application/json")
                 .expectBody(CustomerDTO.class);
+    }
+
+    @Test
+    @Order(3)
+    void testCreateCustomer() {
+        webTestClient.post()
+                .uri(CustomerController.CUSTOMER_PATH)
+                .body(Mono.just(getTestCustomerDto()), CustomerDTO.class)
+                .header("Content-type", "application/json")
+                .exchange()
+                .expectStatus().isCreated()
+                .expectHeader().location("http://localhost:8080" + CustomerController.CUSTOMER_PATH + "/5");
+    }
+
+    private static CustomerDTO getTestCustomerDto() {
+        return CustomerDTO.builder()
+                .name("Test customer")
+                .build();
     }
 }
