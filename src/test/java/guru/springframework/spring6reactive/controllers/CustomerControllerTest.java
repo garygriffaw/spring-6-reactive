@@ -63,6 +63,16 @@ class CustomerControllerTest {
                 .expectStatus().isNoContent();
     }
 
+    @Test
+    @Order(5)
+    void testPatchCustomer() {
+        webTestClient.patch()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 1)
+                .body(Mono.just(getTestCustomerDto()), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isNoContent();
+    }
+
     private static CustomerDTO getTestCustomerDto() {
         return CustomerDTO.builder()
                 .name("Test customer")
