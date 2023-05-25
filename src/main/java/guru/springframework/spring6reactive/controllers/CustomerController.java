@@ -36,4 +36,10 @@ public class CustomerController {
                             .build().toUri())
                         .build());
     }
+
+    @PutMapping(CUSTOMER_PATH_ID)
+    Mono<ResponseEntity<Void>> updateExistingCustomer(@PathVariable("customerId") Integer customerId, @Validated @RequestBody CustomerDTO customerDTO) {
+        return customerService.updateCustomer(customerId, customerDTO)
+                .map(savedDto -> ResponseEntity.ok().build());
+    }
 }
