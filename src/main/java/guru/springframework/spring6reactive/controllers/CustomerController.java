@@ -3,9 +3,10 @@ package guru.springframework.spring6reactive.controllers;
 import guru.springframework.spring6reactive.model.CustomerDTO;
 import guru.springframework.spring6reactive.services.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,5 +26,14 @@ public class CustomerController {
     @GetMapping(CUSTOMER_PATH_ID)
     Mono<CustomerDTO> getCustomerById(@PathVariable("customerId") Integer customerId) {
         return customerService.getCustomerById(customerId);
+    }
+
+    @PostMapping(CUSTOMER_PATH)
+    Mono<ResponseEntity<Void>> createNewCustomer(@Validated @RequestBody CustomerDTO customerDTO) {
+        return customerService.saveNewCustomer(customerDTO)
+                .map(savedDto -> ResponseEntity.created(UriComponentsBuilder
+                            .fromHttpUrl("http://localhost:8080/" + CUSTOMER_PATH + "/" + savedDto.getId())
+                            .build().toUri())
+                        .build());
     }
 }
