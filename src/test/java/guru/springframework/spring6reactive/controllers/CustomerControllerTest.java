@@ -1,5 +1,6 @@
 package guru.springframework.spring6reactive.controllers;
 
+import guru.springframework.spring6reactive.model.CustomerDTO;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -26,5 +27,16 @@ class CustomerControllerTest {
                 .expectStatus().isOk()
                 .expectHeader().valueEquals("Content-type", "application/json")
                 .expectBody().jsonPath("$.size()").isEqualTo(4);
+    }
+
+    @Test
+    @Order(2)
+    void testGetCustomerById() {
+        webTestClient.get()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 1)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().valueEquals("Content-type", "application/json")
+                .expectBody(CustomerDTO.class);
     }
 }
