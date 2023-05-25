@@ -73,6 +73,15 @@ class CustomerControllerTest {
                 .expectStatus().isNoContent();
     }
 
+    @Test
+    @Order(999)
+    void testDeleteCustomer() {
+        webTestClient.delete()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 1)
+                .exchange()
+                .expectStatus().isNoContent();
+    }
+
     private static CustomerDTO getTestCustomerDto() {
         return CustomerDTO.builder()
                 .name("Test customer")
