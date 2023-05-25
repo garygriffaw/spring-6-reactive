@@ -35,4 +35,10 @@ public class BeerController {
                             .build().toUri())
                         .build());
     }
+
+    @PutMapping(BEER_PATH_ID)
+    Mono<ResponseEntity<Void>> updateExistingBeer(@PathVariable("beerId") Integer beerId, @RequestBody BeerDTO beerDTO) {
+        return beerService.updateBeer(beerId, beerDTO)
+                .map(savedDto -> ResponseEntity.ok().build());
+    }
 }
