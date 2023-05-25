@@ -53,6 +53,16 @@ class CustomerControllerTest {
                 .expectHeader().location("http://localhost:8080" + CustomerController.CUSTOMER_PATH + "/5");
     }
 
+    @Test
+    @Order(4)
+    void testUpdateCustomer() {
+        webTestClient.put()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 1)
+                .body(Mono.just(getTestCustomerDto()), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isNoContent();
+    }
+
     private static CustomerDTO getTestCustomerDto() {
         return CustomerDTO.builder()
                 .name("Test customer")
