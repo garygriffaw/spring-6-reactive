@@ -48,4 +48,10 @@ public class CustomerController {
         return customerService.patchCustomer(customerId, customerDTO)
                 .map(savedDto -> ResponseEntity.ok().build());
     }
+
+    @DeleteMapping(CUSTOMER_PATH_ID)
+    Mono<ResponseEntity<Void>> deleteCustomerById(@PathVariable("customerId") Integer customerId) {
+        return customerService.deleteCustomerById(customerId)
+                .map(response -> ResponseEntity.noContent().build());
+    }
 }
