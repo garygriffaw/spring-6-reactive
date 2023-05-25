@@ -5,6 +5,7 @@ import guru.springframework.spring6reactive.model.CustomerDTO;
 import guru.springframework.spring6reactive.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -38,6 +39,18 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(customerId)
                 .map(foundCustomer -> {
                     foundCustomer.setName(customerDTO.getName());
+                    return foundCustomer;
+                }).flatMap(customerRepository::save)
+                .map(customerMapper::customerToCustomerDto);
+    }
+
+    @Override
+    public Mono<CustomerDTO> patchCustomer(Integer customerId, CustomerDTO customerDTO) {
+        return customerRepository.findById(customerId)
+                .map(foundCustomer -> {
+                    if (StringUtils.hasText(customerDTO.getName()))
+                        foundCustomer.setName(customerDTO.getName());
+
                     return foundCustomer;
                 }).flatMap(customerRepository::save)
                 .map(customerMapper::customerToCustomerDto);

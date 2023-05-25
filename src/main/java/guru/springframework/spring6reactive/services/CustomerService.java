@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 public interface CustomerService {
     Flux<CustomerDTO> listCustomers();
 
@@ -13,4 +15,6 @@ public interface CustomerService {
     Mono<CustomerDTO> saveNewCustomer(CustomerDTO customerDTO);
 
     Mono<CustomerDTO> updateCustomer(Integer customerId, CustomerDTO customerDTO);
+
+    Mono<CustomerDTO> patchCustomer(Integer customerId, CustomerDTO customerDTO);
 }

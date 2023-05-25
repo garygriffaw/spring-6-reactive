@@ -42,4 +42,10 @@ public class CustomerController {
         return customerService.updateCustomer(customerId, customerDTO)
                 .map(savedDto -> ResponseEntity.ok().build());
     }
+
+    @PatchMapping(CUSTOMER_PATH_ID)
+    Mono<ResponseEntity<Void>> patchExistingCustomer(@PathVariable("customerId") Integer customerId, @Validated @RequestBody CustomerDTO customerDTO) {
+        return customerService.patchCustomer(customerId, customerDTO)
+                .map(savedDto -> ResponseEntity.ok().build());
+    }
 }
