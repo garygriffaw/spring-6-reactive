@@ -42,6 +42,14 @@ class CustomerControllerTest {
     }
 
     @Test
+    void testGetCustomerByIdNotFound() {
+        webTestClient.get()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 999)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
     @Order(3)
     void testCreateCustomer() {
         webTestClient.post()
