@@ -95,6 +95,19 @@ class CustomerControllerTest {
 
     @Test
     @Order(5)
+    void testUpdateCustomerInvalidData() {
+        CustomerDTO testCustomerDto = getTestCustomerDto();
+        testCustomerDto.setName("");
+
+        webTestClient.put()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 1)
+                .body(Mono.just(testCustomerDto), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    @Order(6)
     void testPatchCustomer() {
         webTestClient.patch()
                 .uri(CustomerController.CUSTOMER_PATH_ID, 1)
