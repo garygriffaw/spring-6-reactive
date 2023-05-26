@@ -62,6 +62,19 @@ class CustomerControllerTest {
     }
 
     @Test
+    void testCreateCustomerInvalidData() {
+        CustomerDTO testCustomerDto = getTestCustomerDto();
+        testCustomerDto.setName("");
+
+        webTestClient.post()
+                .uri(CustomerController.CUSTOMER_PATH)
+                .body(Mono.just(testCustomerDto), CustomerDTO.class)
+                .header("Content-type", "application/json")
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
     @Order(4)
     void testUpdateCustomer() {
         webTestClient.put()
